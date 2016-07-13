@@ -100,6 +100,6 @@ app.post("/games/:id", function(req, res){
 });
 
 
-app.listen(8000, function(a) {
+app.listen(process.env.PORT, function(a) {
     console.log("Listening")
 });
