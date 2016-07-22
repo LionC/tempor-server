@@ -63,20 +63,22 @@ app.post("/games/:id/orders/:player", function(req, res){
     game.ordersNextTurn[req.params.player] = req.body;
     games.putSync(req.params.id, jsog.encode(game));
 
-    var players = game.game.players.length;
+    var players = game.game.settings.numberOfPlayers;
     var i = 0;
-    console.log(JSON.stringify(games.getSync(req.params.id), null, 1));
+    //console.log(JSON.stringify(games.getSync(req.params.id), null, 1));
     for(var index in game.ordersNextTurn) {
         if(index.indexOf("__") == -1) {
             i++;
         }
     }
+    console.log(i + " of " + players + " players have given orders.")
     if(players == i) {
         console.log("advancing game " + req.params.id);
 
         for(var index in game.ordersNextTurn) {
             if(index.indexOf("__") == -1 ) {
                 var orders = game.ordersNextTurn[index];
+                console.log(JSON.stringify(orders,null,2));
                 orders.forEach(function (order) {
                     order.owner = getObjectById(game.game.players, order.owner.id);
                     game.game.orders.push(order);
@@ -86,7 +88,6 @@ app.post("/games/:id/orders/:player", function(req, res){
         game.ordersNextTurn = {};
         game.game.turnsPassed++;
         games.putSync(req.params.id, jsog.encode(game));
-        console.log(JSON.stringify(games.getSync(req.params.id), null, 1));
     }
 
     res.status(200).send();
