@@ -43,10 +43,13 @@ app.use(function(req, res, next) {
 
 
 app.get("/games/:id", function(req, res) {
-
-    var game = jsog.decode(games.getSync(req.params.id));
-
-    res.status(200).json(toJsog(game.game));
+    games.get(req.params.id, function(err, data) {
+        if(data == undefined) {
+            res.status(404)
+        } else {
+            res.status(200).json(toJsog(data.decode(json)))
+        }
+    })
 });
 
 
