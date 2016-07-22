@@ -47,7 +47,7 @@ app.get("/games/:id", function(req, res) {
         if(data == undefined) {
             res.status(404)
         } else {
-            res.status(200).json(toJsog(data.decode(json)))
+            res.status(200).json(toJsog(jsog.decode(data)))
         }
     })
 });
