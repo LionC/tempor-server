@@ -47,7 +47,7 @@ function doAdvancementIfNeccesary(game, gameId) {
     }
 }
 
-function shouldBeAdvanced(game, gameId) {
+function shouldBeAdvanced(game) {
     if(game.game.settings.turnTimer > 0 && game.game.lastAdvancement + game.game.settings.turnTimer * 60 * 1000 > new Date().valueOf()) {
         return true;
     }
@@ -62,7 +62,7 @@ function shouldBeAdvanced(game, gameId) {
     return players == i
 }
 
-function advanceGame(game) {
+function advanceGame(game, gameId) {
     console.log("advancing game");
     for(var index in game.ordersNextTurn) {
         if(index.indexOf("__") == -1 ) {
