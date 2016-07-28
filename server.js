@@ -101,7 +101,7 @@ app.get("/games/:id/orders/:player", function(req, res) {
             req.status(200).json([])
         }
         req.status(200).json(toJsog(game));
-    }
+    });
 });
 
 app.post("/games/:id/orders/:player", function(req, res){
