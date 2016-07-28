@@ -49,6 +49,7 @@ function doAdvancementIfNeccesary(game, gameId) {
 
 function shouldBeAdvanced(game) {
     if(game.game.settings.turnTimer > 0 && game.game.lastAdvancement + game.game.settings.turnTimer * 60 * 1000 < new Date().valueOf()) {
+        console.log("advancing because of time: " + game.game.lastAdvancement  " should be adnanved (" + new Date().valueOf() + ")")
         return true;
     }
     var players = game.game.settings.numberOfPlayers;
