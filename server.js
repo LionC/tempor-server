@@ -41,13 +41,13 @@ app.use(function(req, res, next) {
     next();
 });
 
-function doAdvancementIfNeccesary(game) {
+function doAdvancementIfNeccesary(game, gameId) {
     while(shouldBeAdvanced(game)) {
-        advanceGame(game)
+        advanceGame(game, gameId)
     }
 }
 
-function shouldBeAdvanced(game) {
+function shouldBeAdvanced(game, gameId) {
     if(game.game.settings.turnTimer > 0 && game.game.lastAdvancement + game.game.settings.turnTimer * 60 * 1000 > new Date().valueOf()) {
         return true;
     }
@@ -76,7 +76,7 @@ function advanceGame(game) {
     game.ordersNextTurn = {};
     game.game.turnsPassed++;
     game.game.lastAdvancement += game.game.settings.turnTimer * 60 * 1000
-    games.putSync(req.params.id, jsog.encode(game));
+    games.putSync(gameId, jsog.encode(game));
 }
 
 
@@ -86,7 +86,7 @@ app.get("/games/:id", function(req, res) {
             res.status(404)
         } else {
             var game = jsog.decode(data)
-            doAdvancementIfNeccesary(game)
+            doAdvancementIfNeccesary(game, req.params.id)
             res.status(200).json(toJsog(game.game))
         }
     })
@@ -113,7 +113,7 @@ app.post("/games/:id/orders/:player", function(req, res){
     }
 
     if(shouldBeAdvanced(game)) {
-        doAdvancementIfNeccesary(game);
+        doAdvancementIfNeccesary(game, req.params.id);
         res.status(409).send();
     }
 
@@ -124,6 +124,8 @@ app.post("/games/:id/orders/:player", function(req, res){
     game.ordersNextTurn[req.params.player] = req.body;
     games.putSync(req.params.id, jsog.encode(game));
 
+
+    doAdvancementIfNeccesary(game, req.params.id);
 
     res.status(200).send();
 });
