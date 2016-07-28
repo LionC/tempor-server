@@ -63,7 +63,7 @@ function shouldBeAdvanced(game) {
 }
 
 function advanceGame(game) {
-    console.log("advancing game " + req.params.id);
+    console.log("advancing game");
     for(var index in game.ordersNextTurn) {
         if(index.indexOf("__") == -1 ) {
             var orders = game.ordersNextTurn[index];
