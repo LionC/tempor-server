@@ -48,7 +48,7 @@ function doAdvancementIfNeccesary(game, gameId) {
 }
 
 function shouldBeAdvanced(game) {
-    if(game.game.settings.turnTimer > 0 && game.game.lastAdvancement + game.game.settings.turnTimer * 60 * 1000 > new Date().valueOf()) {
+    if(game.game.settings.turnTimer > 0 && game.game.lastAdvancement + game.game.settings.turnTimer * 60 * 1000 < new Date().valueOf()) {
         return true;
     }
     var players = game.game.settings.numberOfPlayers;
